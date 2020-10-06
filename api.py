@@ -3,12 +3,21 @@ import flask
 import parselist
 import requests
 import yaml
+import config
+import sentry_sdk
+from sentry_sdk.integrations.flask import FlaskIntegration
 from apscheduler.schedulers.background import BackgroundScheduler
 
 app = flask.Flask(__name__)
 # app.config["DEBUG"] = True
 app.config["JSONIFY_PRETTYPRINT_REGULAR"] = True
 
+# Init sentry
+sentry_sdk.init(
+    dsn="https://ba10567a81304d18a0f2304269d3ae23@o456896.ingest.sentry.io/5454934",
+    integrations=[FlaskIntegration()],
+    traces_sample_rate=1.0
+)
 
 # All Packages:
 # /v1/<host>/packages
@@ -113,4 +122,4 @@ def category_packages(host, category):
     return flask.jsonify(parser.get_category(category))
 
 
-app.run(port=80)
+app.run(port=config.port)
