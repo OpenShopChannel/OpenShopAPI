@@ -65,8 +65,14 @@ def page_not_found(e):
 
 @app.route('/', methods=['GET'])
 def home():
-    return "<h1>Open Shop Channel API</h1><p>Welcome to the OSC API Public Beta! " \
-           "For documentation, go to <documentation></p>"
+    return "<h1>Open Shop Channel API</h1><p>Welcome to the OSC API Public Beta!\n" \
+           "For documentation, go to our docs. api-docs.oscwii.org</p>"
+
+
+@app.route('/v1', methods=['GET'])
+def v1():
+    return "<h1>Open Shop Channel API</h1><p>Oh boy, version 1.\n" \
+           "For documentation, go to our docs. api-docs.oscwii.org</p>"
 
 
 @app.route('/v1/hosts', methods=['GET'], strict_slashes=False)
@@ -107,4 +113,4 @@ def category_packages(host, category):
     return flask.jsonify(parser.get_category(category))
 
 
-app.run()
+app.run(port=80)
