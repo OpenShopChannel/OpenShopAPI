@@ -149,7 +149,7 @@ def convert_list_to_json(hbblist):
         rating = line[7]
         controllers = line[8]
         # folders_to_create = line[9].replace(";", " ").split()
-        display_name = hbblist.readline().strip().strip("\\n")
+        display_name = hbblist.readline().strip().strip("\\\n")
         author = hbblist.readline().strip().strip("\\n")
         version = hbblist.readline().strip().strip("\\n")
         extracted = hbblist.readline().strip().strip("\\n")
