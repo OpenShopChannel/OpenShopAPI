@@ -4,8 +4,8 @@ import parselist
 import requests
 import yaml
 import config
-import sentry_sdk
-from sentry_sdk.integrations.flask import FlaskIntegration
+# import sentry_sdk
+# from sentry_sdk.integrations.flask import FlaskIntegration
 from apscheduler.schedulers.background import BackgroundScheduler
 
 app = flask.Flask(__name__)
@@ -13,11 +13,11 @@ app = flask.Flask(__name__)
 app.config["JSONIFY_PRETTYPRINT_REGULAR"] = True
 
 # Init sentry
-sentry_sdk.init(
-    dsn="https://ba10567a81304d18a0f2304269d3ae23@o456896.ingest.sentry.io/5454934",
-    integrations=[FlaskIntegration()],
-    traces_sample_rate=1.0
-)
+#sentry_sdk.init(
+#    dsn="https://ba10567a81304d18a0f2304269d3ae23@o456896.ingest.sentry.io/5454934",
+#    integrations=[FlaskIntegration()],
+#    traces_sample_rate=1.0
+#)
 
 # All Packages:
 # /v1/<host>/packages
@@ -120,6 +120,17 @@ def category_packages(host, category):
     parser = parselist.hbbjsonparser()
     parser.load_json(l)
     return flask.jsonify(parser.get_category(category))
+
+
+@app.route('/v1/<host>/coder/<coder>/packages', methods=['GET'], strict_slashes=False)
+def coder_packages(host, coder):
+    test_list_url = url(host)
+
+    f, headers = urllib.request.urlretrieve(test_list_url)
+    l = parselist.convert_list_file_to_json(f)
+    parser = parselist.hbbjsonparser()
+    parser.load_json(l)
+    return flask.jsonify(parser.get_developer(coder))
 
 
 app.run(port=config.port)

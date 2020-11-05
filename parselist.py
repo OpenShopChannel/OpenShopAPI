@@ -53,6 +53,14 @@ class hbbjsonparser(object):
 
         return packages
 
+    def get_developer(self, coder):
+        packages = []
+        for package in self.all:
+            if package["coder"] == coder:
+                packages.append(package)
+
+        return packages
+
     # sorts list into smaller chunks
     def sort(self):
         if self.all:
@@ -150,11 +158,11 @@ def convert_list_to_json(hbblist):
         controllers = line[8]
         # folders_to_create = line[9].replace(";", " ").split()
         display_name = hbblist.readline().strip().strip("\\\n")
-        author = hbblist.readline().strip().strip("\\n")
-        version = hbblist.readline().strip().strip("\\n")
-        extracted = hbblist.readline().strip().strip("\\n")
-        description = hbblist.readline().strip().strip("\\n")
-        details = hbblist.readline().strip().strip("\\n")
+        author = hbblist.readline().strip().strip("\\\n")
+        version = hbblist.readline().strip().strip("\\\n")
+        extracted = hbblist.readline().strip().strip("\\\n")
+        description = hbblist.readline().strip().strip("\\\n")
+        details = hbblist.readline().strip().strip("\\\n")
 
         entry = repo_entry()
         entry["internal_name"] = name
