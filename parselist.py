@@ -61,6 +61,15 @@ class hbbjsonparser(object):
 
         return packages
 
+    def get_developer_category(self, category, coder):
+        packages = []
+        for package in self.all:
+            if package["coder"] == coder:
+                if package["category"] == category:
+                    packages.append(package)
+
+        return packages
+
     # sorts list into smaller chunks
     def sort(self):
         if self.all:

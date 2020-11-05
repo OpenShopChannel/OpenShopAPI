@@ -133,4 +133,15 @@ def coder_packages(host, coder):
     return flask.jsonify(parser.get_developer(coder))
 
 
+@app.route('/v1/<host>/category/<category>/coder/<coder>/packages', methods=['GET'], strict_slashes=False)
+def coder_packages_categories(host, category, coder):
+    test_list_url = url(host)
+
+    f, headers = urllib.request.urlretrieve(test_list_url)
+    l = parselist.convert_list_file_to_json(f)
+    parser = parselist.hbbjsonparser()
+    parser.load_json(l)
+    return flask.jsonify(parser.get_developer_category(category, coder))
+
+
 app.run(port=config.port)
