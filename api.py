@@ -1,5 +1,7 @@
 import urllib.request
 import flask
+from flask import request
+
 import parselist
 import requests
 import yaml
@@ -78,6 +80,42 @@ def home():
            "For documentation, go to our docs. api-docs.oscwii.org</p>"
 
 
+# Version 2 (Current)
+@app.route('/v2/<host>/packages', methods=['GET'], strict_slashes=False)
+def v2_packages(host):
+    test_list_url = url(host)
+
+    coder = request.args.get("coder")
+    category = request.args.get("category")
+    package = request.args.get("package")
+
+
+    f, headers = urllib.request.urlretrieve(test_list_url)
+    l = parselist.convert_list_file_to_json(f)
+    parser = parselist.hbbjsonparser()
+    parser.load_json(l)
+
+    if coder and category:
+        return flask.jsonify(parser.get_developer_category(category, coder))
+
+    if coder:
+        return flask.jsonify(parser.get_developer(coder))
+
+    if category:
+        return flask.jsonify(parser.get_category(category))
+
+    if package:
+        return flask.jsonify(parser.dictionary(package))
+
+    return flask.jsonify(l)
+
+
+@app.route('/v2/hosts', methods=['GET'], strict_slashes=False)
+def v2_api_hosts():
+    return flask.jsonify(parsed_hosts)
+
+
+# Version 1 (For backwards compatiblity, do not change!)
 @app.route('/v1', methods=['GET'])
 def v1():
     return "<h1>Open Shop Channel API</h1><p>Oh boy, version 1.\n" \
