@@ -92,13 +92,13 @@ class hbbjsonparser(object):
         return self.get_package_dict(app_name)
 
 
-def convert_list_file_to_json(list_file):
+def convert_list_file_to_json(list_file, hostname):
     with open(list_file) as f:
         contents = io.StringIO(f.read())
-    return convert_list_to_json(contents)
+    return convert_list_to_json(contents, hostname)
 
 
-def convert_list_to_json(hbblist):
+def convert_list_to_json(hbblist, hostname):
     def repo_entry():
         entry = {
             "internal_name": "",  # String
@@ -116,8 +116,10 @@ def convert_list_to_json(hbblist):
             "zip_size": 0,  # Zip size, int
             "downloads": 0,  # dl's, int
             "controllers": "",
-            # "folders_to_create": ".",
             "rating": "",
+            "zip_url" : "",
+            "icon_url": "",
+            "extra_directories": "",
         }
         return entry
 
@@ -165,13 +167,20 @@ def convert_list_to_json(hbblist):
         downloads = line[6]
         rating = line[7]
         controllers = line[8]
-        # folders_to_create = line[9].replace(";", " ").split()
+        # extra_directories = line[9].replace(";", " ").split()
         display_name = hbblist.readline().strip().strip("\\\n")
         author = hbblist.readline().strip().strip("\\\n")
         version = hbblist.readline().strip().strip("\\\n")
         extracted = hbblist.readline().strip().strip("\\\n")
         description = hbblist.readline().strip().strip("\\\n")
         details = hbblist.readline().strip().strip("\\\n")
+        zip_url = f"https://{hostname}/hbb/{name}/{name}.zip"
+        icon_url = f"https://{hostname}/hbb/{name}.png"
+        extra_directories = line[9].replace(";", " ").split()
+
+        # Clear list if the are no extra directories
+        if extra_directories == ['.']:
+            extra_directories = []
 
         entry = repo_entry()
         entry["internal_name"] = name
@@ -187,8 +196,10 @@ def convert_list_to_json(hbblist):
         entry["updated"] = updated  # str(date.strftime(updated, "%m/%d/%Y"))
         entry["zip_size"] = int(folder_size)
         entry["downloads"] = int(downloads)
-        # entry["folders_to_create"] = folders_to_create
         entry["controllers"] = controllers
+        entry["zip_url"] = zip_url
+        entry["icon_url"] = icon_url
+        entry["extra_directories"] = extra_directories
 
         # Collect all generated libget-style repo entries from the list
         packages.append(entry)

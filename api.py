@@ -91,7 +91,7 @@ def v2_packages(host):
 
 
     f, headers = urllib.request.urlretrieve(test_list_url)
-    l = parselist.convert_list_file_to_json(f)
+    l = parselist.convert_list_file_to_json(f, get_hostname(host))
     parser = parselist.hbbjsonparser()
     parser.load_json(l)
 
@@ -132,7 +132,7 @@ def all_packages(host):
     test_list_url = url(host)
 
     f, headers = urllib.request.urlretrieve(test_list_url)
-    l = parselist.convert_list_file_to_json(f)
+    l = parselist.convert_list_file_to_json(f, get_hostname(host))
     parser = parselist.hbbjsonparser()
     parser.load_json(l)
     return flask.jsonify(l)
@@ -143,7 +143,7 @@ def one_package(host, app_name):
     test_list_url = url(host)
 
     f, headers = urllib.request.urlretrieve(test_list_url)
-    l = parselist.convert_list_file_to_json(f)
+    l = parselist.convert_list_file_to_json(f, get_hostname(host))
     parser = parselist.hbbjsonparser()
     parser.load_json(l)
     return flask.jsonify(parser.dictionary(app_name))
@@ -154,7 +154,7 @@ def category_packages(host, category):
     test_list_url = url(host)
 
     f, headers = urllib.request.urlretrieve(test_list_url)
-    l = parselist.convert_list_file_to_json(f)
+    l = parselist.convert_list_file_to_json(f, get_hostname(host))
     parser = parselist.hbbjsonparser()
     parser.load_json(l)
     return flask.jsonify(parser.get_category(category))
@@ -165,7 +165,7 @@ def coder_packages(host, coder):
     test_list_url = url(host)
 
     f, headers = urllib.request.urlretrieve(test_list_url)
-    l = parselist.convert_list_file_to_json(f)
+    l = parselist.convert_list_file_to_json(f, get_hostname(host))
     parser = parselist.hbbjsonparser()
     parser.load_json(l)
     return flask.jsonify(parser.get_developer(coder))
@@ -176,7 +176,7 @@ def coder_packages_categories(host, category, coder):
     test_list_url = url(host)
 
     f, headers = urllib.request.urlretrieve(test_list_url)
-    l = parselist.convert_list_file_to_json(f)
+    l = parselist.convert_list_file_to_json(f, get_hostname(host))
     parser = parselist.hbbjsonparser()
     parser.load_json(l)
     return flask.jsonify(parser.get_developer_category(category, coder))
