@@ -70,6 +70,42 @@ class hbbjsonparser(object):
 
         return packages
 
+    def query_packages(self, query):
+        packages = []
+        for package in self.all:
+            if query in package["internal_name"]:
+                packages.append(package)
+
+        return packages
+
+    def query_packages_category(self, query, category):
+        packages = []
+        for package in self.all:
+            if query in package["internal_name"]:
+                if package["category"] == category:
+                    packages.append(package)
+
+        return packages
+
+    def query_packages_coder(self, query, coder):
+        packages = []
+        for package in self.all:
+            if query in package["internal_name"]:
+                if package["coder"] == coder:
+                    packages.append(package)
+
+        return packages
+
+    def query_packages_category_coder(self, query, category, coder):
+        packages = []
+        for package in self.all:
+            if query in package["internal_name"]:
+                if package["coder"] == coder:
+                    if package["category"] == category:
+                        packages.append(package)
+
+        return packages
+
     # sorts list into smaller chunks
     def sort(self):
         if self.all:

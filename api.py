@@ -85,6 +85,7 @@ def home():
 def v2_packages(host):
     test_list_url = url(host)
 
+    query = request.args.get("query")
     coder = request.args.get("coder")
     category = request.args.get("category")
     package = request.args.get("package")
@@ -95,12 +96,27 @@ def v2_packages(host):
     parser = parselist.hbbjsonparser()
     parser.load_json(l)
 
+    # Query
+    if query and coder and category:
+        return flask.jsonify(parser.query_packages_category_coder(query, coder, category))
+
+    if query and coder:
+        return flask.jsonify(parser.query_packages_coder(query, coder))
+
+    if query and category:
+        return flask.jsonify(parser.query_packages_category(query, category))
+
+    if query:
+        return flask.jsonify(parser.query_packages(query))
+
+    # Coder
     if coder and category:
         return flask.jsonify(parser.get_developer_category(category, coder))
 
     if coder:
         return flask.jsonify(parser.get_developer(coder))
 
+    # Basic
     if category:
         return flask.jsonify(parser.get_category(category))
 
