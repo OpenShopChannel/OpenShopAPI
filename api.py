@@ -6,8 +6,6 @@ import parselist
 import requests
 import yaml
 import config
-# import sentry_sdk
-# from sentry_sdk.integrations.flask import FlaskIntegration
 from apscheduler.schedulers.background import BackgroundScheduler
 
 app = flask.Flask(__name__)
@@ -53,7 +51,10 @@ scheduler.start()
 
 
 def get_hostname(host):
-    return parsed_hosts["repositories"][host]["host"]
+    if host == "codemii":
+        return "hbb2.oscwii.org"
+    else:
+        return parsed_hosts["repositories"][host]["host"]
 
 
 def url(host):

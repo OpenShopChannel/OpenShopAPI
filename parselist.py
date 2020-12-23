@@ -2,6 +2,11 @@
 # Written for Open Shop Channel Project
 
 import io, json
+import metadata
+
+# load metadata json
+metadata = metadata.Metadata()
+metadata.load()
 
 
 # python object to parse converted hbb list file
@@ -156,6 +161,8 @@ def convert_list_to_json(hbblist, hostname):
             "zip_url" : "",
             "icon_url": "",
             "extra_directories": "",
+            "shop_title_id": "",
+            "shop_title_version": 1,
         }
         return entry
 
@@ -213,6 +220,8 @@ def convert_list_to_json(hbblist, hostname):
         zip_url = f"https://{hostname}/hbb/{name}/{name}.zip"
         icon_url = f"https://{hostname}/hbb/{name}.png"
         extra_directories = line[9].replace(";", " ").split()
+        shop_title_id = metadata.title_id_by_name(name)
+        shop_title_version = metadata.title_version_by_name(name)
 
         # Clear list if the are no extra directories
         if extra_directories == ['.']:
@@ -236,6 +245,8 @@ def convert_list_to_json(hbblist, hostname):
         entry["zip_url"] = zip_url
         entry["icon_url"] = icon_url
         entry["extra_directories"] = extra_directories
+        entry["shop_title_id"] = shop_title_id
+        entry["shop_title_version"] = shop_title_version
 
         # Collect all generated libget-style repo entries from the list
         packages.append(entry)
