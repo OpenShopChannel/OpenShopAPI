@@ -199,4 +199,11 @@ def coder_packages_categories(host, category, coder):
     return flask.jsonify(parser.get_developer_category(category, coder))
 
 
+@app.after_request
+def after_request(response):
+    header = response.headers
+    header['Access-Control-Allow-Origin'] = '*'
+    return response
+
+
 app.run(port=config.port)
