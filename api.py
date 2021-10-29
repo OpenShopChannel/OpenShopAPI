@@ -8,6 +8,8 @@ import yaml
 import config
 from apscheduler.schedulers.background import BackgroundScheduler
 
+import v3
+
 app = flask.Flask(__name__)
 # app.config["DEBUG"] = True
 app.config["JSONIFY_PRETTYPRINT_REGULAR"] = True
@@ -205,5 +207,7 @@ def after_request(response):
     header['Access-Control-Allow-Origin'] = '*'
     return response
 
+
+app.register_blueprint(v3.v3, url_prefix="/v3")
 
 app.run(port=config.port)
