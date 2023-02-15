@@ -210,4 +210,5 @@ def after_request(response):
 
 app.register_blueprint(v3.v3, url_prefix="/v3")
 
-app.run(port=config.port)
+if __name__ == '__main__':
+    app.run(port=config.port)
